@@ -1,3 +1,4 @@
+
 (function(storyContent) {
 
     // Create ink story from the content using inkjs
@@ -5,7 +6,6 @@
 
     var savePoint = "";
 
-    let savedTheme;
     let globalTagTheme;
 
     // Global tags - those at the top of the ink file
@@ -18,13 +18,8 @@
             var globalTag = story.globalTags[i];
             var splitTag = splitPropertyTag(globalTag);
 
-            // THEME: dark
-            if( splitTag && splitTag.property == "theme" ) {
-                globalTagTheme = splitTag.val;
-            }
-
             // author: Your Name
-            else if( splitTag && splitTag.property == "author" ) {
+            if( splitTag && splitTag.property == "author" ) {
                 var byline = document.querySelector('.byline');
                 byline.innerHTML = "by "+splitTag.val;
             }
@@ -35,7 +30,6 @@
     var outerScrollContainer = document.querySelector('.outerContainer');
 
     // page features setup
-    setupTheme(globalTagTheme);
     var hasSave = loadSavePoint();
     setupButtons(hasSave);
 
@@ -310,26 +304,6 @@
         return false;
     }
 
-    // Detects which theme (light or dark) to use
-    function setupTheme(globalTagTheme) {
-
-        // load theme from browser memory
-        var savedTheme;
-        try {
-            savedTheme = window.localStorage.getItem('theme');
-        } catch (e) {
-            console.debug("Couldn't load saved theme");
-        }
-
-        // Check whether the OS/browser is configured for dark mode
-        var browserDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        if (savedTheme === "dark"
-            || (savedTheme == undefined && globalTagTheme === "dark")
-            || (savedTheme == undefined && globalTagTheme == undefined && browserDark))
-            document.body.classList.add("dark");
-    }
-
     // Used to hook up the functionality for global functionality buttons
     function setupButtons(hasSave) {
 
@@ -372,11 +346,6 @@
             continueStory(true);
         });
 
-        let themeSwitchEl = document.getElementById("theme-switch");
-        if (themeSwitchEl) themeSwitchEl.addEventListener("click", function(event) {
-            document.body.classList.add("switched");
-            document.body.classList.toggle("dark");
-        });
     }
 
 })(storyContent);
