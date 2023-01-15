@@ -142,7 +142,6 @@
             // Add any custom classes derived from ink tags
             for(var i=0; i<customClasses.length; i++)
                 paragraphElement.classList.add(customClasses[i]);
-
             // Fade in paragraph after a short delay
             showAfter(delay, paragraphElement);
             delay += 200.0;
@@ -159,7 +158,7 @@
 
             // Fade choice in after a short delay
             showAfter(delay, choiceParagraphElement);
-            delay += 200.0;
+            delay += 500.0;
 
             // Click on choice
             var choiceAnchorEl = choiceParagraphElement.querySelectorAll("a")[0];
