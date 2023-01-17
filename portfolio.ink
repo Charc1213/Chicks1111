@@ -1,7 +1,9 @@
-Would you like to play a game? #Intro
+Would you like to play a game? 
 
  * Yes -> Begin 
  * <a href="/ResumeCurrent.html">No</a>
+ 
+ 
 
     -> END
 ===Begin===
