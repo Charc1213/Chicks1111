@@ -1,11 +1,11 @@
 Would you like to play a game? 
 
- * Yes -> Begin 
+ * Yes ->BeginGame
  * <a href="/ResumeCurrent.html">No</a>
+ -> DONE
  
- -Thanks for visiting!
-
-    -> END
-===Begin===
-Start game
-->DONE
+ ===BeginGame===
+ # CLEAR 
+ # IMAGE: Images/Door.png 
+ Knock Knock Knock....
+ ->DONE

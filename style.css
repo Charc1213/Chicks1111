@@ -90,7 +90,7 @@ h2 {
     background-image: url("Images/PortfolioTheme.svg");
     background-position: center;
     background-size: cover;
-    overflow: hidden;
+    overflow: scroll;
     
 }
 
