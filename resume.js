@@ -3,6 +3,10 @@ function switchImage() {
         var img = document.getElementById("resumeImage");
         img.src = "Images/Mobile Resume of Chantelle Hicks.svg";
      }
+     else{
+        var img = document.getElementById("resumeImage");
+        img.src = "Images/Resume of Chantelle Hicks.svg";
+     }
      
     
 }
