@@ -255,6 +255,7 @@
         for(var i=0; i<allElements.length; i++) {
             var el = allElements[i];
             el.parentNode.removeChild(el);
+            
         }
     }
 
