@@ -1,10 +1,18 @@
 function switchImage() {
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        var img = document.getElementById("resumeImage");
-        img.src = "Images\Mobile Resume of Chantelle Hicks.svg";
-     }
-     
-    
+    // Get the current screen size
+var screenWidth = window.innerWidth;
+var screenHeight = window.innerHeight;
+
+// Select the SVG image element
+var img = document.getElementById("resumeImage");
+
+// Check the screen size and swap the image source accordingly
+if (screenWidth < 480 || screenHeight < 480) {
+  img.src = "Images/Mobile Resume of Chantelle Hicks.svg";
+} else {
+  img.src = "Images/Resume of Chantelle Hicks.svg";
+}
+
 }
 
 // Call the function when the page is loaded
