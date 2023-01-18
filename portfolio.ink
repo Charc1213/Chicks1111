@@ -25,8 +25,8 @@ Would you like to play a game?
  
  ===PickUpBox===
 # CLEAR 
-# IMAGE: Images/OpenDoor.png 
-Hmmm....should you open it?
+# IMAGE: Images/openbox.png 
+What a big box for such a small note...
 ->DONE
 
 ===CloseDoorAgain===
