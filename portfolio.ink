@@ -27,11 +27,12 @@ Would you like to play a game?
 # CLEAR 
 # IMAGE: Images/openbox.png 
 What a big box for such a small note...
+*[Read note]->ReadNote
 ->DONE
 
 ===CloseDoorAgain===
 # CLEAR 
-# IMAGE: Images/OpenDoor.png 
+# IMAGE: Images/DoorClosing.gif 
 Not today...
 ->DONE
 
@@ -39,4 +40,10 @@ Not today...
 # CLEAR 
 # IMAGE: Images/OpenDoor.png 
 Hello....
+->DONE
+
+===ReadNote===
+# CLEAR 
+# IMAGE: Images/Note.png 
+Creepy.
 ->DONE

@@ -116,24 +116,13 @@ h2 {
 p {
     text-shadow: 1px 1px #333;
     filter: blur(0.2px);
-    animation: appear-disappear 4s ;
     font-size: 16pt;
     font-weight: 700;
     color: rgb(203, 185, 218);
     line-height: 1.7em;
     font-family: 'Gruppo', cursive;
 }
-@keyframes appear-disappear {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
+
 
 a {
     font-weight: 700;
