@@ -1,3 +1,6 @@
+~temp closeDoors = 0
+~temp lookedRight = true
+
 Would you like to play a game? 
 
  * [Yes]->BeginGame
@@ -8,9 +11,14 @@ Would you like to play a game?
  # CLEAR 
  # IMAGE: Images/Door.png 
  Knock Knock Knock....
- 
- *[Open Door] ->OpenDoor
- *[<a href="/ResumeCurrent.html">Nevermind, I don't want to play</a>]
+ {closeDoors <2:
+ +[Open Door] ->OpenDoor
+ }
+ {closeDoors>1:
+ +[Open Door] ->OpenDoor
+ +[Call police]->CallPolice
+ }
+ +[<a href="/ResumeCurrent.html">Nevermind, I don't want to play</a>]
  
  ->DONE
  
@@ -19,7 +27,7 @@ Would you like to play a game?
  # IMAGE: Images/OpenDoor.png 
  What could that be?
  *[Pick up the box]->PickUpBox
- *[Push the box aside and close the door]->CloseDoorAgain
+ *[Close the door]->CloseDoorAgain
  *[Peek outside to see who left it]->PeekOutside
  ->DONE
  
@@ -32,18 +40,65 @@ What a big box for such a small note...
 
 ===CloseDoorAgain===
 # CLEAR 
-# IMAGE: Images/DoorClosing.gif 
+# IMAGE: Images/CloseDoor.gif 
+~closeDoors++
 Not today...
+*[Go back inside]->BeginGame
++[Call police to report suspicious package]->CallPolice
 ->DONE
 
 ===PeekOutside===
 # CLEAR 
 # IMAGE: Images/OpenDoor.png 
-Hello....
+*[Look left]->Left
+*[Look right]->Right
 ->DONE
 
 ===ReadNote===
 # CLEAR 
 # IMAGE: Images/Note.png 
 Creepy.
+*[Go back inside]->Inside
+->DONE
+
+===Left===
+# CLEAR 
+# IMAGE: Images/LeftLookFirst.gif 
+*[Look Right]->Right
+*[Pick up package]->PickUpBox
+*[Go inside and close the door]->CloseDoorAgain
+->DONE
+
+===Right===
+# CLEAR 
+# IMAGE: Images/RightLookFirst.gif
+Who's that?
+*[Chase suspicious person]->Right
+*[Pick up package]->PickUpBox
+*[Go back inside]->Inside
+->DONE
+
+===CallPolice===
+# CLEAR 
+# IMAGE: Images/callpolice.png
+Hello, I'd like to report a suspicious package...
+{lookedRight:
+*[Describe suspicious person] ->PoliceVisit
+}
+{lookedRight == false:
+*[Report sucspicous package]->PoliceVisit
+}
+
+->DONE
+
+===Inside===
+# CLEAR 
+# IMAGE: Images/LivingRoom.png
++[Call police]->CallPolice
+
+->DONE
+
+===PoliceVisit===
+# CLEAR 
+# IMAGE: Images/PoliceVisit.png
 ->DONE

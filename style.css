@@ -220,20 +220,23 @@ img {
     #controls {
         z-index: 2;
         padding-top: 24px;
+        padding-bottom: 24px;
         top: 0;
         left: 0;
         right: 0;
     }
 }
-
-
 .container {
-  width: 50%;
+  width: auto;
+  text-align: center;
 }
 
 img {
-  width: 100%;
-  height: auto;
+    width: 150%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 body {
     background-color: #1a1a1a;
