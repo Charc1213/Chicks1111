@@ -3,6 +3,8 @@
 ~temp readNote = false
 ~temp calledCops = false
 ~temp collectedNotes = 0
+~temp yelled = false
+~temp chased = false
 
 Would you like to play a game? 
 
@@ -57,14 +59,16 @@ Not today...
 
 ===ReadNote===
 # CLEAR 
+{collectedNotes == 0 && readNote == false:
 # IMAGE: Images/Note.png 
-{collectedNotes == 0:
 Creepy.
-~readNote=true
-collectedNotes++
-*[Go back inside]->Inside
+~collectedNotes++
+*[Go back inside]
+~readNote = true
+->Inside
 }
-{collectedNotes == 1:
+{collectedNotes == 1 && readNote == true:
+# IMAGE: Images/NoteAfterCops.png 
 Great. Another place to go.
 *[Head to location]->GoToNewLocation
 }
@@ -109,16 +113,40 @@ Hello, I'd like to report a suspicious package...
  ->DONE
 
 ===Stairwell===
-# CLEAR 
+{yelled == false && chased == false:
+# CLEAR
 # IMAGE: Images/Stairwell.png
 *[Yell "Hey!"]
 The person doesn't turn around and continues to run down the stairs.
+~yelled = true
 ->Stairwell
 *[Run after suspicious person]
 You take off down the stairs, but the person runs faster than you. They run out the door into the alley. The door slams behind them. You'll never catch them.
+~chased = true
 ->Stairwell
 *[Go back inside]->Inside
-
+}
+{yelled == true && chased == false:
+# IMAGE: Images/Stairwell2.png
+*[Run after suspicious person]
+You take off down the stairs, but the person runs faster than you. They run out the door into the alley. The door slams behind them. You'll never catch them.
+~chased = true
+->Stairwell
+*[Go back inside]->Inside
+}
+{yelled == false && chased == true:
+# IMAGE: Images/Stairwell3.png
+*[Yell "Hey!"]
+The person doesn't turn around and continues to run down the stairs.
+~yelled = true
+->Stairwell
+*[Go back inside]->Inside
+}
+{yelled == true && chased == true:
+# CLEAR
+# IMAGE: Images/Stairwell3.png
+*[Go back inside]->Inside
+}
 ===PoliceVisit===
 # CLEAR 
 # IMAGE: Images/PoliceVisit.png
@@ -154,5 +182,7 @@ A strange person in a hoodie approaches.
 }
 
 ===GoToNewLocation===
+# CLEAR 
+# IMAGE: Images/BombSquad.png
 ->DONE
 }
