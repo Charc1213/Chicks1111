@@ -1,10 +1,11 @@
 ~temp closeDoors = 0
 ~temp lookedRight = false
-~temp readNote = false
+~temp noteRead = false
 ~temp calledCops = false
 ~temp collectedNotes = 0
 ~temp yelled = false
 ~temp chased = false
+~temp beginConvo = false
 
 Would you like to play a game? 
 
@@ -59,19 +60,21 @@ Not today...
 
 ===ReadNote===
 # CLEAR 
-{collectedNotes == 0 && readNote == false:
+{collectedNotes == 0 && noteRead == false:
 # IMAGE: Images/Note.png 
 Creepy.
 ~collectedNotes++
 *[Go back inside]
-~readNote = true
+~noteRead = true
 ->Inside
 }
-{collectedNotes == 1 && readNote == true:
+{collectedNotes == 1 && noteRead == true:
 # IMAGE: Images/NoteAfterCops.png 
 Great. Another place to go.
 *[Head to location]->GoToNewLocation
 }
+ +[<a href="/ResumeCurrent.html">Nevermind, I don't want to play</a>]
+ ->DONE
 
 ===Left===
 # CLEAR 
@@ -92,7 +95,7 @@ Who's that?
 # CLEAR 
 # IMAGE: Images/callpolice.png
 Hello, I'd like to report a suspicious package...
-{lookedRight:
+{lookedRight == true:
 *[Describe suspicious person] ->PoliceVisit
 }
 {lookedRight == false:
@@ -104,11 +107,15 @@ Hello, I'd like to report a suspicious package...
 ===Inside===
 # CLEAR 
 # IMAGE: Images/LivingRoom.png
-
+{noteRead == false:
 +[Call police]->CallPolice
- * <a href="/ResumeCurrent.html">Give up on this mystery</a>
- {readNote: 
++[Nevermind. Open package] ->PickUpBox
+ *[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+ }
+ {noteRead == true: 
+ +[Call police]->CallPolice
  *[Head outside to meet behind the building]->MeetUp
+  *[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
  }
  ->DONE
 
@@ -163,23 +170,57 @@ The person doesn't turn around and continues to run down the stairs.
 # IMAGE: Images/BombSquad.png
 All clear. The package is safe.
 *[Pick up package]->PickUpBox
-*[Throw package away]
+*[Throw package away]->Inside
 ~closeDoors++
 ->BeginGame
 
 ===MeetUp===
 # CLEAR 
-# IMAGE: Images/BombSquad.png
 {calledCops:
-There's a note by the dumpster. 
+# IMAGE: Images/Alley.png
+There's a note across from the dumpster. 
 *[Pick it up]->ReadNote
 *[Go back home]->Inside
 }
 {calledCops == false: 
+# IMAGE: Images/hoodedfigurealley.png
 A strange person in a hoodie approaches.
-*[Ask person if they left the package]->Inside
+*[Ask person if they left the package]
+Yes.->HoodedConvo
 *[They look shady. Retreat back home.]->Inside
 }
+==HoodedConvo==
+{beginConvo == false:
+#CLEAR
+# IMAGE: Images/hoodedfigurealley.png
+*[Who are you?]
+I heard you're looking for somebody...
+~beginConvo = true
+->HoodedConvo
+*[Why?]
+I heard you're looking for somebody...
+~beginConvo = true
+->HoodedConvo
+*[Can I see your face?]
+I heard you're looking for somebody...
+~beginConvo = true
+->HoodedConvo
+}
+{beginConvo == true:
+# IMAGE: Images/hoodedfigurealley.png
+*[I am]
+I know who you're looking for, but are you ready for her? That's the real question...
+->HoodedFigureRun
+*[Where did you hear that?]
+Doesn't matter. I know you're trying to find her. Lots of people are trying to find her.
+->HoodedFigureRun
+}
+
+===HoodedFigureRun===
+# CLEAR
+# IMAGE: Images/smokealley.gif
+Wait!
+->DONE
 
 ===GoToNewLocation===
 # CLEAR 
