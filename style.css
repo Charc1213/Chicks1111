@@ -115,7 +115,6 @@ h2 {
 
 p {
     text-shadow: 1px 1px #333;
-    filter: blur(0.2px);
     font-size: 16pt;
     font-weight: 700;
     color: rgb(203, 185, 218);

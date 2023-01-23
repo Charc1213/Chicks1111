@@ -7,6 +7,7 @@
 ~temp chased = false
 ~temp beginConvo = false
 
+
 Would you like to play a game? 
 
  * [Yes]->BeginGame
@@ -71,7 +72,7 @@ Creepy.
 {collectedNotes == 1 && noteRead == true:
 # IMAGE: Images/NoteAfterCops.png 
 Great. Another place to go.
-*[Head to location]->GoToNewLocation
+*[Head to location]->GoToPipeworks
 }
  +[<a href="/ResumeCurrent.html">Nevermind, I don't want to play</a>]
  ->DONE
@@ -87,6 +88,7 @@ Great. Another place to go.
 # CLEAR 
 # IMAGE: Images/RightLookFirst.gif
 Who's that?
+~lookedRight = true
 *[Chase suspicious person]->Stairwell
 *[Pick up package]->PickUpBox
 *[Go back inside]->Inside
@@ -94,14 +96,27 @@ Who's that?
 ===CallPolice===
 # CLEAR 
 # IMAGE: Images/callpolice.png
-Hello, I'd like to report a suspicious package...
+{noteRead == false:
 {lookedRight == true:
 *[Describe suspicious person] ->PoliceVisit
+*[Report suspicious package]->PoliceVisit
++[Nevermind. Open package] ->PickUpBox
+}
+{lookedRight == false:
+*[Report suspicious package]->PoliceVisit
++[Nevermind. Open package] ->PickUpBox
+}
+}
+{noteRead == true:
+{lookedRight == true:
+*[Describe suspicious person] ->PoliceVisit
+*[Report suspicious package]->PoliceVisit
 }
 {lookedRight == false:
 *[Report suspicious package]->PoliceVisit
 }
-+[Nevermind. Open package] ->PickUpBox
+}
+
 
 
 ===Inside===
@@ -110,7 +125,7 @@ Hello, I'd like to report a suspicious package...
 {noteRead == false:
 +[Call police]->CallPolice
 +[Nevermind. Open package] ->PickUpBox
- *[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
  }
  {noteRead == true: 
  +[Call police]->CallPolice
@@ -136,7 +151,7 @@ You take off down the stairs, but the person runs faster than you. They run out 
 {yelled == true && chased == false:
 # IMAGE: Images/Stairwell2.png
 *[Run after suspicious person]
-You take off down the stairs, but the person runs faster than you. They run out the door into the alley. The door slams behind them. You'll never catch them.
+You take off down the stairs, but the person runs faster than you. 
 ~chased = true
 ->Stairwell
 *[Go back inside]->Inside
@@ -152,6 +167,7 @@ The person doesn't turn around and continues to run down the stairs.
 {yelled == true && chased == true:
 # CLEAR
 # IMAGE: Images/Stairwell3.png
+They run out the door into the alley. The door slams behind them. You'll never catch them.
 *[Go back inside]->Inside
 }
 ===PoliceVisit===
@@ -219,10 +235,19 @@ Doesn't matter. I know you're trying to find her. Lots of people are trying to f
 ===HoodedFigureRun===
 # CLEAR
 # IMAGE: Images/smokealley.gif
-Wait!
+Wait! ->AlleyNote
+
+ 
+ ===AlleyNote===
+ # CLEAR
+# IMAGE: Images/AlleyNoteAfterSmoke.png
+The smoke clears leaving a note on the ground.You pick it up and read it.
+*[Go to Pipeworks]->GoToPipeworks
+*[Go back inside]->Inside
+*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
 ->DONE
 
-===GoToNewLocation===
+===GoToPipeworks===
 # CLEAR 
 # IMAGE: Images/BombSquad.png
 ->DONE
