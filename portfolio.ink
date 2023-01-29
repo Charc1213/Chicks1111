@@ -6,6 +6,7 @@
 ~temp firstChoice = false
 ~temp secondChoice = false
 ~temp beginConvo = false
+~temp Day = 1
 
 
 Would you like to play a game? 
@@ -25,10 +26,10 @@ Would you like to play a game?
  +[Open Door] ->OpenDoor
  +[Call police]->CallPolice
  }
+
  +[<a href="/ResumeCurrent.html">Nevermind, I don't want to play</a>]
  
  ->DONE
- 
  ===OpenDoor===
  # CLEAR 
  # IMAGE: Images/OpenDoor.png 
@@ -125,8 +126,9 @@ We've already visited. We will let you know if we have any more information.
 }
 
 ===Inside===
-# CLEAR 
+# CLEAR  
 # IMAGE: Images/LivingRoom.png
+{Day == 1:
 {noteRead == false:
 +[Call police]->CallPolice
 +[Nevermind. Open package] ->PickUpBox
@@ -136,6 +138,12 @@ We've already visited. We will let you know if we have any more information.
  +[Call police]->CallPolice
  *[Head outside to meet behind the building]->MeetUp
   *[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+ }
+ }
+ {Day == 2:
+ After a good nights sleep, you wake up ready for the day.
+ *[Head to event]->SchoolEvent
+ *[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
  }
  ->DONE
 
@@ -299,7 +307,7 @@ There's nobody here. There is an envelope on the desk though, with your name on 
 ===ReadLetter===
 # CLEAR 
 # IMAGE: Images/LetterReading.png
-Looks like she might be at the party on 555 Success St.
+Wow, she has a lot of skills. Looks like she might be at the party on 555 Success St.
 {secondChoice == true:
 *[Head to party]->Party
 *[Go back home]->Inside
@@ -315,7 +323,6 @@ Looks like she might be at the party on 555 Success St.
 
 ->LookAround
 }
-
 
 ===LookAround===
 # CLEAR 
@@ -389,7 +396,7 @@ She just left. It was nice to see her though. She spends a lot of time working a
 {secondChoice == true:
 She was here. I think she left though. She had a school thing to go to for one of her kids. I don't know how she succeeds while having 5 kids! I think the kids help her as a designer though. She has a very diverse family that helps her really incorporate inclusivity in her designs.
 *[Find out more information]->Party
-*[Find out where school is]->Party
+*[Find out where school is]->SchoolEvent
 }
 
 ===Drink===
@@ -401,16 +408,109 @@ Here you go!
 
 ===SchoolEvent===
 # CLEAR 
-# IMAGE: Images/Play.png
-
+# IMAGE: Images/School.png
+{Day == 1:
 You arrive to find signs leading to a school play. You follow the signs to the auditorium where small children are performing.
 *[Watch the play]->Play
 *[Wait outside the auditorium]->WaitOutside
+}
+{Day == 2:
+You go to the school and see a lot of people. None of them look like Chantelle. You ask a few people if they know where she is. Somebody tells you that she is helping some students create resumes and portfolios inside.
+*[Go inside] ->ComputerLab
+*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+}
 
 ===Play===
 # CLEAR 
-# IMAGE: Images/Play.png
+# IMAGE: Images/Play.gif
+~firstChoice = false
+~secondChoice = false
+You sit down and enjoy the play. It lasts for about 45 minutes. At the end, the audience stands up and claps. 
+*[Yell out Chantelle]
+~firstChoice = true
+->SchoolChantelleInfo
+*[Ask people around you if they know where Chantelle is]
+~secondChoice = true
+->SchoolChantelleInfo
+*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
 
 ===WaitOutside===
 # CLEAR 
-# IMAGE: Images/Play.png
+# IMAGE: Images/SchoolHallway.png
+~firstChoice = false
+~secondChoice = false
+You paitently wait for a bit. People begin to head out in large groups. You look for Chantelle, but you don't seeing her.
+*[Yell out Chantelle]
+~firstChoice = true
+->SchoolChantelleInfo
+*[Ask people around you if they know where Chantelle is]
+~secondChoice = true
+->SchoolChantelleInfo
+*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+
+===SchoolChantelleInfo===
+# CLEAR
+{firstChoice == true:
+# IMAGE: Images/Audience.png
+You yell out "Chantelle", but nobody answers. A few people did look back at you though. Maybe they know who Chantelle is.
+*[Ask people around you if they know where Chantelle is]
+~secondChoice=true
+->SchoolChantelleInfo
+}
+{secondChoice == true:
+# IMAGE: Images/Crowd.png
+You ask the people in the crowd until somebody says that they know Chantelle. They tell you that she left with her family, but that she enjoys helping out with school events. They tell you that she will be at a school event the following day. They jot down the information for you before they walk away.
+*[Head home for the night]
+~Day = 2
+->Inside
+}
+
+===ComputerLab===
+# CLEAR 
+# IMAGE: Images/ComputerLab.png
+~firstChoice = false
+~secondChoice = false
+You walk to the computer lab and see some students with what appears to be a teacher.
+*[Ask students about Chantelle]
+~firstChoice = true
+->ComputerLabInfo
+*[Ask teacher about Chantelle]
+~secondChoice = true
+->ComputerLabInfo
+*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+
+===ComputerLabInfo===
+# CLEAR 
+# IMAGE: Images/ComputerLab.png
+{firstChoice == true:
+The students show you some of the work Chantelle helped them with. She did a great job highlighting the skills and talents of each student. 
+*[Ask where Chantelle is]->Clearance
+*[Ask teacher about Chantelle]
+~secondChoice = true
+->ComputerLabInfo
+}
+{secondChoice == true:
+The teacher introduces himself as Mr. F. He tells you that Chantelle is very personable and is always looking for ways to help others.
+*[Ask Mr.F if he knows where Chantelle is] ->Clearance
+}
+===Clearance===
+# CLEAR 
+# IMAGE: Images/Classified.gif
+They tell you that the information is classified, but they tell you that they know she is supposed to catch up with her old team from Bombilate games.
+*[Ask about Bombilate Games]->BombilateGames
+
+===BombilateGames===
+# CLEAR 
+# IMAGE: Images/QuantumCheeks.png
+*[Open article about Bombilate Games]
+ # LINKOPEN: https:\/\/www.brianaaea.com/sacramento-developer-collective/2017/10/26/indie-developer-spotlight-chantelle-cole-and-bombilate-games
+ ->BombilateGames
+*[Download Quantum Cheeks]
+# LINKOPEN: https:\/\/m.apkpure.com/quantum-cheeks/com.bombilate.QuantumCheeks
+ ->BombilateGames
+ *[Head Home] 
+ ~Day = 3
+ ->Inside
+ ->Inside
+
+
