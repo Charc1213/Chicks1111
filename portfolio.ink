@@ -26,10 +26,9 @@ Would you like to play a game?
  +[Open Door] ->OpenDoor
  +[Call police]->CallPolice
  }
-
  +[<a href="/ResumeCurrent.html">Nevermind, I don't want to play</a>]
- 
  ->DONE
+ 
  ===OpenDoor===
  # CLEAR 
  # IMAGE: Images/OpenDoor.png 
@@ -389,13 +388,16 @@ This seems like the place.
 ===ChantelleInfo===
 # CLEAR 
 # IMAGE: Images/Party.png
-{firstChoice == true:
+{firstChoice == true && secondChoice == false:
 She just left. It was nice to see her though. She spends a lot of time working and enjoying her family.
-*[Find out more information]->Party
+*[Find out more information]->Patrons
 }
-{secondChoice == true:
+{secondChoice == true && firstChoice == false:
 She was here. I think she left though. She had a school thing to go to for one of her kids. I don't know how she succeeds while having 5 kids! I think the kids help her as a designer though. She has a very diverse family that helps her really incorporate inclusivity in her designs.
-*[Find out more information]->Party
+*[Find out more information]->Bartender
+*[Find out where school is]->SchoolEvent
+}
+{firstChoice == true && secondChoice == true:
 *[Find out where school is]->SchoolEvent
 }
 
@@ -493,11 +495,13 @@ The students show you some of the work Chantelle helped them with. She did a gre
 The teacher introduces himself as Mr. F. He tells you that Chantelle is very personable and is always looking for ways to help others.
 *[Ask Mr.F if he knows where Chantelle is] ->Clearance
 }
+
 ===Clearance===
 # CLEAR 
 # IMAGE: Images/Classified.gif
 They tell you that the information is classified, but they tell you that they know she is supposed to catch up with her old team from Bombilate games.
 *[Ask about Bombilate Games]->BombilateGames
+*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
 
 ===BombilateGames===
 # CLEAR 
@@ -510,7 +514,6 @@ They tell you that the information is classified, but they tell you that they kn
  ->BombilateGames
  *[Head Home] 
  ~Day = 3
- ->Inside
  ->Inside
 
 
