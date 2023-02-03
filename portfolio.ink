@@ -1,18 +1,19 @@
-~temp closeDoors = 0
-~temp lookedRight = false
-~temp noteRead = false
-~temp calledCops = false
-~temp collectedNotes = 0
-~temp firstChoice = false
-~temp secondChoice = false
-~temp beginConvo = false
-~temp Day = 1
+VAR closeDoors = 0
+VAR lookedRight = false
+VAR noteRead = false
+VAR calledCops = false
+VAR collectedNotes = 0
+VAR firstChoice = false
+VAR secondChoice = false
+VAR beginConvo = false
+VAR Day = 1
 
 
 Would you like to play a game? 
 
- * [Yes]->BeginGame
- * <a href="/ResumeCurrent.html">No</a>
+ + [Yes]->BeginGame
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
  
  ===BeginGame===
@@ -26,8 +27,9 @@ Would you like to play a game?
  +[Open Door] ->OpenDoor
  +[Call police]->CallPolice
  }
- +[<a href="/ResumeCurrent.html">Nevermind, I don't want to play</a>]
- ->DONE
+ +[No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
  
  ===OpenDoor===
  # CLEAR 
@@ -74,8 +76,9 @@ Creepy.
 Great. Another place to go.
 *[Head to location]->GoToPipeworks
 }
- +[<a href="/ResumeCurrent.html">Nevermind, I don't want to play</a>]
- ->DONE
++ [No]
+# LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+-> DONE
 
 ===Left===
 # CLEAR 
@@ -121,8 +124,10 @@ Who's that?
 {calledCops == true:
 We've already visited. We will let you know if we have any more information.
 *[Hang up]->Inside
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-}
+* [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+ }
 
 ===Inside===
 # CLEAR  
@@ -131,20 +136,33 @@ We've already visited. We will let you know if we have any more information.
 {noteRead == false:
 +[Call police]->CallPolice
 +[Nevermind. Open package] ->PickUpBox
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
  }
  {noteRead == true: 
  +[Call police]->CallPolice
  *[Head outside to meet behind the building]->MeetUp
-  *[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
  }
- }
+  }
  {Day == 2:
  After a good nights sleep, you wake up ready for the day.
  *[Head to event]->SchoolEvent
- *[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
  }
+ {Day == 3:
+*[Check phone notifications]->Email
+*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+*[Google "Chantelle + Pipeworks"]
+ # LINKOPEN: https:\/\//www.linkedin.com/in/chantellethegamedesigner/
+ Open Link
  ->DONE
+ }
 
 ===Stairwell===
 {firstChoice == false && secondChoice == false:
@@ -284,8 +302,9 @@ You'll understand soon.
 The smoke clears leaving a note on the ground.You pick it up and read it.
 *[Go to Pipeworks]->GoToPipeworks
 *[Go back inside]->Inside
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-->DONE
+* [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE->DONE
 
 ===GoToPipeworks===
 # CLEAR 
@@ -300,7 +319,8 @@ There's nobody here. There is an envelope on the desk though, with your name on 
 ~secondChoice = true
 ->LookAround
 *[Go back home]->Inside
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
 ->DONE
 
 ===ReadLetter===
@@ -310,16 +330,18 @@ Wow, she has a lot of skills. Looks like she might be at the party on 555 Succes
 {secondChoice == true:
 *[Head to party]->Party
 *[Go back home]->Inside
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-}
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+ }
 {secondChoice == false:
 *[Look around]
 ~secondChoice = true
 ->LookAround
 *[Head to party]->Party
 *[Go back home]->Inside
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
 ->LookAround
 }
 
@@ -334,8 +356,9 @@ Interesting. Looks like she won an award for most creative use of theme. That's 
 }
 *[Head to party]->Party
 *[Go back home]->Inside
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
 
 ===Party===
 # CLEAR 
@@ -356,14 +379,14 @@ This seems like the place.
 ===Bartender===
 # CLEAR 
 # IMAGE: Images/Bartender.png
-{secondChoice == false:
+{secondChoice == false && firstChoice == true:
 *[Ask about Chantelle]->ChantelleInfo
 *[Order a drink]->Drink
 *[Approach patrons]
 ~secondChoice = true
 ->Patrons
 }
-{secondChoice == true:
+{secondChoice == true && firstChoice == true:
 *[Ask about Chantelle]
 ~secondChoice = false
 ->ChantelleInfo
@@ -373,13 +396,13 @@ This seems like the place.
 ===Patrons===
 # CLEAR 
 # IMAGE: Images/Patrons.png
-{firstChoice == false:
+{firstChoice == false && secondChoice == true:
 *[Ask about Chantelle]->ChantelleInfo
 *[Approach bartender]
 ~firstChoice = true
 ->Bartender
 }
-{firstChoice == true:
+{firstChoice == true && secondChoice == true:
 *[Ask about Chantelle]
 ~firstChoice = false
 ->ChantelleInfo
@@ -419,8 +442,10 @@ You arrive to find signs leading to a school play. You follow the signs to the a
 {Day == 2:
 You go to the school and see a lot of people. None of them look like Chantelle. You ask a few people if they know where she is. Somebody tells you that she is helping some students create resumes and portfolios inside.
 *[Go inside] ->ComputerLab
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-}
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+ }
 
 ===Play===
 # CLEAR 
@@ -434,8 +459,10 @@ You sit down and enjoy the play. It lasts for about 45 minutes. At the end, the 
 *[Ask people around you if they know where Chantelle is]
 ~secondChoice = true
 ->SchoolChantelleInfo
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+ 
 ===WaitOutside===
 # CLEAR 
 # IMAGE: Images/SchoolHallway.png
@@ -448,8 +475,9 @@ You paitently wait for a bit. People begin to head out in large groups. You look
 *[Ask people around you if they know where Chantelle is]
 ~secondChoice = true
 ->SchoolChantelleInfo
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
 ===SchoolChantelleInfo===
 # CLEAR
 {firstChoice == true:
@@ -479,8 +507,10 @@ You walk to the computer lab and see some students with what appears to be a tea
 *[Ask teacher about Chantelle]
 ~secondChoice = true
 ->ComputerLabInfo
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+ 
 ===ComputerLabInfo===
 # CLEAR 
 # IMAGE: Images/ComputerLab.png
@@ -501,8 +531,10 @@ The teacher introduces himself as Mr. F. He tells you that Chantelle is very per
 # IMAGE: Images/Classified.gif
 They tell you that the information is classified, but they tell you that they know she is supposed to catch up with her old team from Bombilate games.
 *[Ask about Bombilate Games]->BombilateGames
-*[ <a href="/ResumeCurrent.html">I don't want to play this game</a>]->DONE
-
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+ 
 ===BombilateGames===
 # CLEAR 
 # IMAGE: Images/QuantumCheeks.png
@@ -515,5 +547,41 @@ They tell you that the information is classified, but they tell you that they kn
  *[Head Home] 
  ~Day = 3
  ->Inside
+ 
+ ===Email===
+# CLEAR 
+# IMAGE: Images/notifation.png
+There's one new email! 
+*[Open email]->ReadEmail
+*[Swipe away enail notification]->PhoneCall
+ * [No]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+ 
+===ReadEmail===
+# CLEAR 
+# IMAGE: Images/ReadingQuest.png
+The email is from CastleQuest. 
+*[Click on link]
+# LINKOPEN: https:\/\//www.facebook.com/readingquestbecomingaknight/ 
+->DONE
+*[Close email]->PhoneCall
+
+===PhoneCall===
+# CLEAR 
+# IMAGE: Images/RingPhone.gif
+Ring ring!
+*[Answer phone]->TalkOnPhone
+*[Reject phone call]->Voicemail
 
 
+===TalkOnPhone===
+# CLEAR 
+# IMAGE: Images/ParadoxTectonic.png
+Hello. This is Paradox Tectonic. Unfortunately, we heard you were looking for Chantelle. While we can't discuss what she worked on, we wanted to let you know that she did in fact work here as a contractor and a temporary employee. She helped out with design tasks and got along well with the team.
+*[Thank Paradox for the call and hang up]->AfteCall
+===Voicemail===
+# CLEAR 
+# IMAGE: Images/RingPhone.gif
+
+===AfterCall===

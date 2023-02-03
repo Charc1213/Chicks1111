@@ -117,7 +117,7 @@ p {
     text-shadow: 1px 1px #333;
     font-size: 16pt;
     font-weight: 700;
-    color: rgb(203, 185, 218);
+    color: rgb(255, 255, 255);
     line-height: 1.7em;
     font-family: 'Gruppo', cursive;
 }
@@ -129,6 +129,9 @@ a {
     font-family: sans-serif;
     transition: color 0.9s;
     font-family: 'Gruppo', cursive;
+    border: 0.5px solid rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 5px;
 }
 
 a:hover {
@@ -139,12 +142,6 @@ a:hover {
 strong {
     color: black;
     font-weight: bold;
-}
-
-img {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
 }
 
 .container .hide {
@@ -231,7 +228,7 @@ img {
 }
 
 img {
-    width: 150%;
+    width: 100%;
     height: auto;
     display: flex;
     align-items: center;
