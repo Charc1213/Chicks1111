@@ -129,9 +129,6 @@ a {
     font-family: sans-serif;
     transition: color 0.9s;
     font-family: 'Gruppo', cursive;
-    border: 0.5px solid rgb(255, 255, 255);
-    border-radius: 10px;
-    padding: 5px;
 }
 
 a:hover {
