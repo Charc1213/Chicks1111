@@ -20,7 +20,6 @@ Would you like to play a game?
  # IMAGE: Images/Door.png 
  Knock Knock Knock....
  +[Open Door] ->OpenDoor
- +[Call police]->CallPolice
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
@@ -30,7 +29,8 @@ Would you like to play a game?
  # IMAGE: Images/OpenDoor.png 
  What could that be?
  *[Pick up the box]->PickUpBox
- *[Close the door]->CloseDoorAgain
+ +[Call police]->CallPolice
+ *[Close the door]->Inside
  *[Peek outside to see who left it]->PeekOutside
  
  ===PickUpBox===
@@ -39,14 +39,6 @@ Would you like to play a game?
 What a big box for such a small note...
 *[Read note]->ReadNote
 *[Put box down and go back inside]->Inside
-
-===CloseDoorAgain===
-# CLEAR 
-# IMAGE: Images/CloseDoor.gif 
-Not today...
-*[Go back inside]->Inside
-+[Call police to report suspicious package]->CallPolice
-->DONE
 
 ===PeekOutside===
 # CLEAR 
@@ -116,7 +108,7 @@ Who's that?
 }
 {calledCops == true:
 We've already visited. We will let you know if we have any more information.
-*[Hang up]->Inside
++[Hang up]->Inside
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
