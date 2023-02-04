@@ -1,5 +1,4 @@
 VAR lookedRight = false
-VAR noteRead = false
 VAR calledCops = false
 VAR collectedNotes = 0
 VAR firstChoice = false
@@ -48,18 +47,19 @@ What a big box for such a small note...
 
 ===ReadNote===
 # CLEAR 
-{collectedNotes == 0 && noteRead == false:
+{collectedNotes == 0:
 # IMAGE: Images/Note.png 
 " I heard you're trying to find somebody... <br> Meet me behind the building in 30 minutes." <br> Creepy.
-~collectedNotes++
 *[Go back inside]
-~noteRead = true
+~collectedNotes = 1
 ->Inside
 }
-{collectedNotes == 1 && noteRead == true:
+{collectedNotes == 1:
 # IMAGE: Images/NoteAfterCops.png 
 "You called the police? <br> New Plan. <br> Go to Pipewoks. There will be a note for you there." <br> Great. Another place to go.
-*[Head to location]->GoToPipeworks
+*[Head to location]
+~collectedNotes = 2
+->GoToPipeworks
 }
  +[I don't want to play this game]
 # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
@@ -85,7 +85,7 @@ Who's that?
 # CLEAR 
 # IMAGE: Images/callpolice.png
 {calledCops == false:
-{noteRead == false:
+{collectedNotes == 0:
 {lookedRight == true:
 *[Describe suspicious person] ->PoliceVisit
 *[Report suspicious package]->PoliceVisit
@@ -96,7 +96,7 @@ Who's that?
 +[Nevermind. Open package] ->PickUpBox
 }
 }
-{noteRead == true:
+{collectedNotes == 1:
 {lookedRight == true:
 *[Describe suspicious person] ->PoliceVisit
 *[Report suspicious package]->PoliceVisit
@@ -118,20 +118,36 @@ We've already visited. We will let you know if we have any more information.
 # CLEAR  
 # IMAGE: Images/LivingRoom.png
 {Day == 1:
-{noteRead == false:
+{collectedNotes == 0:
 +[Call police]->CallPolice
 +[Nevermind. Open package] ->PickUpBox
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
  }
- {noteRead == true: 
+ {collectedNotes == 1 && firstChoice == false:
+ ~firstChoice = false
+ ~secondChoice = false
  +[Call police]->CallPolice
- *[Head outside to meet behind the building]->MeetUp
+ *[Head outside behind the building] ->MeetUp
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
  }
+ {collectedNotes == 1 && firstChoice == true:
+ +[Call police]->CallPolice
+ *[Go back outside] ->AlleyNote
+ +[I don't want to play this game]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+ }
+ {collectedNotes == 2:
+ +[Call police]->CallPolice
+ *[Go to Pipeworks] ->GoToPipeworks
+ +[I don't want to play this game]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+  }
   }
  {Day == 2:
  After a good nights sleep, you wake up ready for the day.
@@ -190,7 +206,7 @@ They run out the door into the alley. The door slams behind them. You'll never c
 # CLEAR 
 # IMAGE: Images/PoliceVisit.png
 ~calledCops=true
-{noteRead == false:
+{collectedNotes == 0:
 {lookedRight:
 *[Tell the policeman about the suspicious person running towards the stairwell] ->BombSquad
 }
@@ -198,7 +214,7 @@ They run out the door into the alley. The door slams behind them. You'll never c
 *[Discuss the suspicious package]->BombSquad
 }
 }
-{noteRead == true:
+{collectedNotes == 1:
 {lookedRight:
 *[Tell the policeman about the suspicious person running towards the stairwell]
 Thanks for the information. We'll file a report and get back to you.
@@ -232,7 +248,9 @@ There's a note across from the dumpster.
 A strange person in a hoodie approaches.
 *[Ask person if they left the package]
 Yes.->HoodedConvo
-*[They look shady. Retreat back home.]->Inside
+*[They look shady. Retreat back home.]
+~firstChoice = true
+->Inside
 }
 ==HoodedConvo==
 {beginConvo == false:
@@ -285,10 +303,12 @@ You'll understand soon.
  ===AlleyNote===
  # CLEAR
 # IMAGE: Images/AlleyNoteAfterSmoke.png
-The smoke clears leaving a note on the ground.You pick it up and read it.
+There's a note on the ground.You pick it up and read it.
 <br> "She works at Pipeworks. Been there for about 2 years. I hear she's a creative designer."
 *[Go to Pipeworks]->GoToPipeworks
-*[Go back inside]->Inside
+*[Go back inside]
+~collectedNotes = 2
+->Inside
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE->DONE
@@ -481,6 +501,7 @@ You paitently wait for a bit. People begin to head out in large groups. You look
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
+ 
 ===SchoolChantelleInfo===
 # CLEAR
 {firstChoice == true:
@@ -565,11 +586,11 @@ There's one new email!
 ===ReadEmail===
 # CLEAR 
 # IMAGE: Images/ReadingQuest.png
-The email is from CastleQuest. 
-*[Click on link]
+The email is from CastleQuest. <br> "Hello, <br> I heard you were looking for Chantelle. She used to work at Castle Quest LLC. She programmed everything in the game using Unity and C\#. She got hited by networking at an IGDA of Sacramento event. <br> She was a dedicated worker, often working into the night to ensure that the game was always at it's best. She cared a lot about the project as it was intended to help childrent learn to read. <br> I hope you find her! I've attached a link to the Facebook page of Reading Quest below."
++[Click on link]
 # LINKOPEN: https:\/\//www.facebook.com/readingquestbecomingaknight/ 
 ->PhoneCall
-*[Close email]->PhoneCall
++[Close email]->PhoneCall
 
 ===PhoneCall===
 # CLEAR 
