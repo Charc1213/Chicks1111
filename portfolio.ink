@@ -13,7 +13,7 @@ Would you like to play a game?
  + [Yes]->BeginGame
  * [No]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
- -> DONE
+ ->BeginGame
 
  ===BeginGame===
  # CLEAR 
@@ -404,20 +404,20 @@ This seems like the place.
 # CLEAR 
 # IMAGE: Images/Bartender.png
 {secondChoice == false && firstChoice == true && Drunk == false:
-*[Ask about Chantelle]->ChantelleInfo
++[Ask about Chantelle]->ChantelleInfo
 *[Order a drink]->Drink
 *[Approach patrons]
 ~secondChoice = true
 ->Patrons
 }
 {secondChoice == true && firstChoice == true:
-*[Ask about Chantelle]
++[Ask about Chantelle]
 ->ChantelleInfo
 *[Order a drink]->Drink
 }
-{Drunk == true:
+{secondChoice == false && firstChoice == true && Drunk == true:
 Oh no. You feel a little light headed. # CLASS: drunk
-*Ask about Chantelle
++[Ask about Chantelle]
 ->ChantelleInfo 
 
 +[Go Home]
