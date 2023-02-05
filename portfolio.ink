@@ -121,7 +121,7 @@ We've already visited. We will let you know if we have any more information.
 {Day == 1:
 {collectedNotes == 0:
 +[Call police]->CallPolice
-+[Nevermind. Open package] ->PickUpBox
++[Open package] ->PickUpBox
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
@@ -150,7 +150,7 @@ We've already visited. We will let you know if we have any more information.
  -> DONE
   }
   {collectedNotes == 3:
-   +[Call police]->CallPolice
+ +[Call police]->CallPolice
  +[Go to Party] ->Party
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
@@ -240,8 +240,7 @@ We can take the package in for evidence. We'll get back to you if we find anythi
 # IMAGE: Images/BombSquad.png
 All clear. The package is safe.
 *[Pick up package]->PickUpBox
-*[Throw package away]->Inside
-->BeginGame
+*[Leave package outside]->Inside
 
 ===MeetUp===
 # CLEAR 
@@ -309,7 +308,7 @@ You'll understand soon.
  ===AlleyNote===
  # CLEAR
 # IMAGE: Images/AlleyNoteAfterSmoke.png
-There's a note on the ground.You pick it up and read it.
+There's a note on the ground. You pick it up and read it.
 <br> "She works at Pipeworks. Been there for about 2 years. I hear she's a creative designer."
 *[Go to Pipeworks]->GoToPipeworks
 *[Go back inside]
@@ -390,36 +389,46 @@ Interesting. Looks like she won an award for most creative use of theme. That's 
 ===Party===
 # CLEAR 
 # IMAGE: Images/Party.png
+{secondChoice == true||firstChoice == true:
 ~firstChoice = false
 ~secondChoice = false
-This seems like the place.
-*[Approach bartender]
+Nice place.
++[Approach bartender]
 ~firstChoice = true
 ->Bartender
-*[Approach patrons]
++[Approach patrons]
 ~secondChoice = true
 ->Patrons
+}
+{firstChoice == true && secondChoice == false:
++[Approach patrons]
+~secondChoice = true
+->Patrons
+}
+{secondChoice == true:
++[Go to School]->SchoolEvent
+}
 
 ===Bartender===
 # CLEAR 
 # IMAGE: Images/Bartender.png
 {firstChoice == true && secondChoice == false && Drunk == false:
-+[Ask about Chantelle]->ChantelleInfo
++[Ask about Chantelle]->ChantelleInfoBartender
 *[Order a drink]->Drink
 *[Approach patrons]
-~secondChoice = true
-->Patrons
+->ChantelleInfoPatrons
 }
 {firstChoice == true && secondChoice == true && Drunk == false:
 +[Ask about Chantelle]
-->ChantelleInfo
+->ChantelleInfoBartender
 *[Order a drink]->Drink
 }
 {firstChoice == true && Drunk == true:
 Oh no. You feel a little light headed. # CLASS: drunk
 +[Ask about Chantelle]
-->ChantelleInfo 
+->ChantelleInfoBartender 
 +[Go Home]
+~Drunk = false
 ->Inside
 }
 
@@ -427,27 +436,36 @@ Oh no. You feel a little light headed. # CLASS: drunk
 ===Patrons===
 # CLEAR 
 # IMAGE: Images/Patrons.png
-+[Ask about Chantelle]->ChantelleInfo
++[Ask about Chantelle]->ChantelleInfoPatrons
 +[Go Home] ->Inside
 
-===ChantelleInfo===
+===ChantelleInfoBartender===
 # CLEAR 
 # IMAGE: Images/Party.png
-{firstChoice == true && secondChoice == false:
+{secondChoice == false:
 She just left. It was nice to see her though. She spends a lot of time working and enjoying her family.
 *[Talk to Patrons]
 ~secondChoice = true
 ->Patrons
 }
-{secondChoice == true && firstChoice == false:
+{secondChoice == true:
++[Find out where school is]->SchoolEvent
+}
+===ChantelleInfoPatrons===
+# CLEAR 
+# IMAGE: Images/Party.png
+{firstChoice == false:
 She was here. I think she left though. She had a school thing to go to for one of her kids. I don't know how she succeeds while having 5 kids! I think the kids help her as a designer though. She has a very diverse family that helps her really incorporate inclusivity in her designs.
 *[Talk to Bartender]
 ~firstChoice = true
 ->Bartender
-*[Find out where school is]->SchoolEvent
+}
+{secondChoice == false:
+She was here. I think she left though. She had a school thing to go to for one of her kids. I don't know how she succeeds while having 5 kids! I think the kids help her as a designer though. She has a very diverse family that helps her really incorporate inclusivity in her designs.
++[Find out where school is]->SchoolEvent
 }
 {firstChoice == true && secondChoice == true:
-*[Find out where school is]->SchoolEvent
++[Find out where school is]->SchoolEvent
 }
 
 ===Drink===
@@ -463,7 +481,7 @@ Here you go!
 # CLEAR 
 # IMAGE: Images/School.png
 {Day == 1:
-You arrive to find signs leading to a school play. You follow the signs to the auditorium where small children are performing.
+Good thing you got some information before the bar closed. You head to the school and find signs leading to a school play. You follow the signs to the auditorium where small children are performing.
 *[Watch the play]->Play
 *[Wait outside the auditorium]->WaitOutside
 }
@@ -502,7 +520,7 @@ You sit down and enjoy the play. It lasts for about 45 minutes. At the end, the 
 # IMAGE: Images/SchoolHallway.png
 ~firstChoice = false
 ~secondChoice = false
-You paitently wait for a bit. People begin to head out in large groups. You look for Chantelle, but you don't seeing her.
+You patiently wait for a bit. People begin to head out in large groups. You look for Chantelle, but you don't see her.
 *[Yell out Chantelle]
 ~firstChoice = true
 ->SchoolChantelleInfo
@@ -525,7 +543,7 @@ You yell out "Chantelle", but nobody answers. A few people did look back at you 
 {secondChoice == true:
 # CLEAR
 # IMAGE: Images/Crowd.png
-You ask the people in the crowd until somebody says that they know Chantelle. They tell you that she left with her family, but that she enjoys helping out with school events. They tell you that she will be at a school event the following day. They jot down the information for you before they walk away.
+You ask the people in the crowd until somebody finally says that they know Chantelle. They tell you that she left with her family, but that she enjoys helping out with school events. They also tell you that she will be at a school event the following day. They jot down the information for you before they walk away.
 *[Head home for the night]
 ~Day = 2
 ->Inside
@@ -550,7 +568,7 @@ You walk to the computer lab and see some students with what appears to be a tea
 ===ComputerLabInfo===
 # CLEAR 
 # IMAGE: Images/ComputerLab.png
-{firstChoice == true:
+{firstChoice == true && secondChoice == false:
 The students show you some of the work Chantelle helped them with. She did a great job highlighting the skills and talents of each student. 
 *[Ask where Chantelle is]->Clearance
 *[Ask teacher about Chantelle]
@@ -559,13 +577,13 @@ The students show you some of the work Chantelle helped them with. She did a gre
 }
 {secondChoice == true:
 The teacher introduces himself as Mr. F. He tells you that Chantelle is very personable and is always looking for ways to help others.
-*[Ask Mr.F if he knows where Chantelle is] ->Clearance
+*[Ask Mr. F if he knows where Chantelle is] ->Clearance
 }
 
 ===Clearance===
 # CLEAR 
 # IMAGE: Images/Classified.gif
-They tell you that the information is classified, but they tell you that they know she is supposed to catch up with her old team from Bombilate games.
+They tell you that the information is classified, but that they know she is supposed to catch up with her old team from Bombilate games.
 *[Ask about Bombilate Games]->BombilateGames
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
@@ -597,7 +615,7 @@ There's one new email!
 ===ReadEmail===
 # CLEAR 
 # IMAGE: Images/ReadingQuest.png
-The email is from CastleQuest. <br> "Hello, <br> I heard you were looking for Chantelle. She used to work at Castle Quest LLC. She programmed everything in the game using Unity and C\#. She got hited by networking at an IGDA of Sacramento event. <br> She was a dedicated worker, often working into the night to ensure that the game was always at it's best. She cared a lot about the project as it was intended to help childrent learn to read. <br> I hope you find her! I've attached a link to the Facebook page of Reading Quest below."
+The email is from CastleQuest. <br> "Hello, <br> I heard you were looking for Chantelle. She used to work at Castle Quest LLC. She programmed everything in the game using Unity and C\#. She got hired by networking at an IGDA of Sacramento event. <br> She was a dedicated worker, often working into the night to ensure that the game was always at it's best. She cared a lot about the project as it was intended to help childrent learn to read. <br> I hope you find her! I've attached a link to the Facebook page of Reading Quest below."
 +[Click on link]
 # LINKOPEN: https:\/\//www.facebook.com/readingquestbecomingaknight/ 
 ->PhoneCall
@@ -619,17 +637,17 @@ Hello. This is Paradox Tectonic. We heard you were looking for Chantelle. While 
 ===Voicemail===
 # CLEAR 
 # IMAGE: Images/ParadoxTectonic.png
-This is Paradox Tectonic. We heard you were looking for Chantelle. While we can't discuss what she worked on, we wanted to let you know that she did in fact work here as a contractor and a temporary employee. She helped out with design tasks and got along well with the team. I hope this information is helpful. 
-*[Hang up]->AfterCall
+ You have a voicemail. <br>"Sorry I missed you. This is Paradox Tectonic. We heard you were looking for Chantelle. While we can't discuss what she worked on, we wanted to let you know that she did in fact work here as a contractor and a temporary employee. She helped out with design tasks and got along well with the team. I hope this information is helpful." 
+*[Put down phone]->AfterCall
 
 ===AfterCall===
 # CLEAR 
 # IMAGE: Images/LivingRoom.png
-Well, we know a lot about Chantelle. Now time to find her!
-*[Go to Pipeworks]
+Well, we know a lot about Chantelle now. I think it's time to go find her!
++[Go to Pipeworks]
 ~Day = 4
 ->GoToPipeworks
-*[Go to school] 
++[Go to school] 
 ~Day = 4
 ->SchoolEvent
 

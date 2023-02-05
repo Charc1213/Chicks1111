@@ -162,6 +162,7 @@ strong {
 .container>* {
     opacity: 1.0;
     transition: opacity 1.0s;
+    padding-bottom: 10px;
 }
 
 /*
@@ -171,7 +172,7 @@ strong {
 .choice {
     text-align: center;
     line-height: 1.7em;
-    padding-bottom: 60px;
+    padding-bottom: 10px;
 }
 
 /* 
