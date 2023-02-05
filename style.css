@@ -107,6 +107,8 @@ h2 {
     margin: 0 auto;
     padding: 20px;
     padding-top: 4em;
+    padding-bottom: 4em;
+
 }
 
 .switched .container {
@@ -129,13 +131,18 @@ a {
     font-family: sans-serif;
     transition: color 0.9s;
     font-family: 'Gruppo', cursive;
+    text-shadow: 1px 1px #333;
 }
 
 a:hover {
     color: rgb(255, 255, 255);
     transition: color 0.1s;
 }
-
+.drunk{
+    transform: rotate(2deg);
+    text-shadow: 1px 1px #000000;
+    filter: blur(1px);
+}
 strong {
     color: black;
     font-weight: bold;

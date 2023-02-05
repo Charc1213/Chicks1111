@@ -5,6 +5,7 @@ VAR firstChoice = false
 VAR secondChoice = false
 VAR beginConvo = false
 VAR Day = 1
+VAR Drunk = false
 
 
 Would you like to play a game? 
@@ -56,7 +57,7 @@ What a big box for such a small note...
 }
 {collectedNotes == 1:
 # IMAGE: Images/NoteAfterCops.png 
-"You called the police? <br> New Plan. <br> Go to Pipewoks. There will be a note for you there." <br> Great. Another place to go.
+"You called the police? <br> New Plan. <br> Go to Pipewoks. There will be a note for you there." <br> <br>Great. Another place to go.
 *[Head to location]
 ~collectedNotes = 2
 ->GoToPipeworks
@@ -129,21 +130,28 @@ We've already visited. We will let you know if we have any more information.
  ~firstChoice = false
  ~secondChoice = false
  +[Call police]->CallPolice
- *[Head outside behind the building] ->MeetUp
+ +[Head outside behind the building] ->MeetUp
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
  }
  {collectedNotes == 1 && firstChoice == true:
  +[Call police]->CallPolice
- *[Go back outside] ->AlleyNote
+ +[Go back outside] ->AlleyNote
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
  }
  {collectedNotes == 2:
  +[Call police]->CallPolice
- *[Go to Pipeworks] ->GoToPipeworks
+ +[Go to Pipeworks] ->GoToPipeworks
+ +[I don't want to play this game]
+  # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
+ -> DONE
+  }
+  {collectedNotes == 3:
+   +[Call police]->CallPolice
+ +[Go to Party] ->Party
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
@@ -257,21 +265,19 @@ Yes.->HoodedConvo
 #CLEAR
 # IMAGE: Images/hoodedfigurealley.png
 *[Who are you?]
-I heard you're looking for somebody...
 ~beginConvo = true
 ->HoodedConvo
 *[Why?]
-I heard you're looking for somebody...
 ~beginConvo = true
 ->HoodedConvo
 *[Can I see your face?]
-I heard you're looking for somebody...
 ~beginConvo = true
 ->HoodedConvo
 }
 {beginConvo == true:
 # CLEAR
 # IMAGE: Images/hoodedfigurealley.png
+I heard you're looking for somebody...
 ~firstChoice = false
 ~secondChoice = false
 *[I am]
@@ -345,6 +351,7 @@ Hmmm, it's locked.
 # IMAGE: Images/LetterReading.png
 "List of employee skills: <br> Technical Design: Ink, JSON, C\#, html, javascirpt <br> Software: Atlassian (Jira\/Confluence), Adobe Suite (Illustrator, Photoshop, ZD, Fresca), Source Control (Perforce, GitHub), Mockups\/FlowCharts(Draw.IO, Inkscape, Visio), Code Editors(Visual Studio Code) <br> Project Completion Party: <br> 555 Success St" <br>
 Wow, she has a lot of skills. Looks like she might be at the party on 555 Success St.
+~collectedNotes =3
 {secondChoice == true:
 *[Head to party]->Party
 *[Go back home]->Inside
@@ -372,11 +379,13 @@ Interesting. Looks like she won an award for most creative use of theme. That's 
 ~firstChoice = true
 ->ReadLetter
 }
+{firstChoice == true:
 *[Head to party]->Party
 *[Go back home]->Inside
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
+ }
 
 ===Party===
 # CLEAR 
@@ -390,39 +399,42 @@ This seems like the place.
 *[Approach patrons]
 ~secondChoice = true
 ->Patrons
-{secondChoice == true:
-*[Go to school event]->SchoolEvent
-}
 
 ===Bartender===
 # CLEAR 
 # IMAGE: Images/Bartender.png
-{secondChoice == false && firstChoice == true:
+{secondChoice == false && firstChoice == true && Drunk == false:
 *[Ask about Chantelle]->ChantelleInfo
 *[Order a drink]->Drink
 *[Approach patrons]
 ~secondChoice = true
 ->Patrons
 }
-{secondChoice == true && firstChoice == false:
+{secondChoice == true && firstChoice == true:
 *[Ask about Chantelle]
 ->ChantelleInfo
 *[Order a drink]->Drink
+}
+{Drunk == true:
+Oh no. You feel a little light headed. # CLASS: drunk
+*Ask about Chantelle
+->ChantelleInfo 
+
++[Go Home]
+->Inside
 }
 
 ===Patrons===
 # CLEAR 
 # IMAGE: Images/Patrons.png
 {firstChoice == false && secondChoice == true:
-*[Ask about Chantelle]->ChantelleInfo
++[Ask about Chantelle]->ChantelleInfo
 *[Approach bartender]
 ~firstChoice = true
 ->Bartender
 }
-{firstChoice == true && secondChoice == false:
-*[Ask about Chantelle]
-~firstChoice = false
-~secondChoice = true
+{firstChoice == true && secondChoice == true:
++[Ask about Chantelle]
 ->ChantelleInfo
 }
 
@@ -431,11 +443,11 @@ This seems like the place.
 # IMAGE: Images/Party.png
 {firstChoice == true && secondChoice == false:
 She just left. It was nice to see her though. She spends a lot of time working and enjoying her family.
-*[Find out more information]->Patrons
+*[Talk to Patrons]->Patrons
 }
 {secondChoice == true && firstChoice == false:
 She was here. I think she left though. She had a school thing to go to for one of her kids. I don't know how she succeeds while having 5 kids! I think the kids help her as a designer though. She has a very diverse family that helps her really incorporate inclusivity in her designs.
-*[Find out more information]->Bartender
+*[Talk to Bartender]->Bartender
 *[Find out where school is]->SchoolEvent
 }
 {firstChoice == true && secondChoice == true:
@@ -446,7 +458,9 @@ She was here. I think she left though. She had a school thing to go to for one o
 # CLEAR 
 # IMAGE: Images/Drink.gif
 Here you go!
-*[Drink up]->Bartender
+*[Drink up]
+~Drunk = true
+->Bartender
 *[Nevermind]->Bartender
 
 ===SchoolEvent===
@@ -578,7 +592,7 @@ They tell you that the information is classified, but they tell you that they kn
 # IMAGE: Images/notification.png
 There's one new email! 
 *[Open email]->ReadEmail
-*[Swipe away enail notification]->PhoneCall
+*[Swipe away email notification]->PhoneCall
 +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
@@ -613,7 +627,7 @@ This is Paradox Tectonic. We heard you were looking for Chantelle. While we can'
 
 ===AfterCall===
 # CLEAR 
-# IMAGE: Images/RingPhone.gif
+# IMAGE: Images/LivingRoom.png
 Well, we know a lot about Chantelle. Now time to find her!
 *[Go to Pipeworks]
 ~Day = 4
