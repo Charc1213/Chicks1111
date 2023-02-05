@@ -336,7 +336,7 @@ There's nobody here. There is an envelope on the desk though, with your name on 
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
 ->DONE
 }
-{Day == 5:
+{Day == 4:
 # IMAGE: Images/PipeworksBuilding.png
 Hmmm, it's locked. 
 +[See if she's at the school]->SchoolEvent
@@ -492,7 +492,7 @@ You go to the school and see a lot of people. None of them look like Chantelle. 
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
  }
- {Day == 5:
+ {Day == 4:
  Chantelle isn't there, but the teacher from the computer lab is there. Mr. F. 
  +[Ask Mr. F for Chantelle's contact information]->ChantellesContactPage
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
@@ -618,7 +618,7 @@ There's one new email!
 The email is from CastleQuest. <br> "Hello, <br> I heard you were looking for Chantelle. She used to work at Castle Quest LLC. She programmed everything in the game using Unity and C\#. She got hired by networking at an IGDA of Sacramento event. <br> She was a dedicated worker, often working into the night to ensure that the game was always at it's best. She cared a lot about the project as it was intended to help childrent learn to read. <br> I hope you find her! I've attached a link to the Facebook page of Reading Quest below."
 +[Click on link]
 # LINKOPEN: https:\/\//www.facebook.com/readingquestbecomingaknight/ 
-->PhoneCall
+->DONE
 +[Close email]->PhoneCall
 
 ===PhoneCall===
