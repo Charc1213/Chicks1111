@@ -133,6 +133,8 @@ a {
     transition: color 0.9s;
     font-family: 'Gruppo', cursive;
     text-shadow: 1px 1px #333;
+    line-height: 1.7em;
+
 }
 
 a:hover {
@@ -169,6 +171,7 @@ strong {
 .choice {
     text-align: center;
     line-height: 1.7em;
+    padding-bottom: 60px;
 }
 
 /* 

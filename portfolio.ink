@@ -353,7 +353,7 @@ Hmmm, it's locked.
 Wow, she has a lot of skills. Looks like she might be at the party on 555 Success St.
 ~collectedNotes =3
 {secondChoice == true:
-*[Head to party]->Party
++[Head to party]->Party
 *[Go back home]->Inside
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
@@ -363,7 +363,7 @@ Wow, she has a lot of skills. Looks like she might be at the party on 555 Succes
 *[Look around]
 ~secondChoice = true
 ->LookAround
-*[Head to party]->Party
++[Head to party]->Party
 *[Go back home]->Inside
  +[I don't want to play this game]
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
@@ -403,51 +403,47 @@ This seems like the place.
 ===Bartender===
 # CLEAR 
 # IMAGE: Images/Bartender.png
-{secondChoice == false && firstChoice == true && Drunk == false:
+{firstChoice == true && secondChoice == false && Drunk == false:
 +[Ask about Chantelle]->ChantelleInfo
 *[Order a drink]->Drink
 *[Approach patrons]
 ~secondChoice = true
 ->Patrons
 }
-{secondChoice == true && firstChoice == true:
+{firstChoice == true && secondChoice == true && Drunk == false:
 +[Ask about Chantelle]
 ->ChantelleInfo
 *[Order a drink]->Drink
 }
-{secondChoice == false && firstChoice == true && Drunk == true:
+{firstChoice == true && Drunk == true:
 Oh no. You feel a little light headed. # CLASS: drunk
 +[Ask about Chantelle]
 ->ChantelleInfo 
-
 +[Go Home]
 ->Inside
 }
 
+
 ===Patrons===
 # CLEAR 
 # IMAGE: Images/Patrons.png
-{firstChoice == false && secondChoice == true:
 +[Ask about Chantelle]->ChantelleInfo
-*[Approach bartender]
-~firstChoice = true
-->Bartender
-}
-{firstChoice == true && secondChoice == true:
-+[Ask about Chantelle]
-->ChantelleInfo
-}
++[Go Home] ->Inside
 
 ===ChantelleInfo===
 # CLEAR 
 # IMAGE: Images/Party.png
 {firstChoice == true && secondChoice == false:
 She just left. It was nice to see her though. She spends a lot of time working and enjoying her family.
-*[Talk to Patrons]->Patrons
+*[Talk to Patrons]
+~secondChoice = true
+->Patrons
 }
 {secondChoice == true && firstChoice == false:
 She was here. I think she left though. She had a school thing to go to for one of her kids. I don't know how she succeeds while having 5 kids! I think the kids help her as a designer though. She has a very diverse family that helps her really incorporate inclusivity in her designs.
-*[Talk to Bartender]->Bartender
+*[Talk to Bartender]
+~firstChoice = true
+->Bartender
 *[Find out where school is]->SchoolEvent
 }
 {firstChoice == true && secondChoice == true:
@@ -484,6 +480,7 @@ You go to the school and see a lot of people. None of them look like Chantelle. 
   # LINKOPEN: https:\/\/chicks1111.com/resumecurrent
  -> DONE
  }
+ 
 ===Play===
 # CLEAR 
 # IMAGE: Images/Play.gif
